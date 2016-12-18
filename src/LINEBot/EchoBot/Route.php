@@ -67,7 +67,7 @@ class Route
                 }
 
                 // $replyText = $event->getText();
-                $message = $event -> getTetx();
+                $recieved_message = $event -> getTetx();
 
                 // $res_contents = get_request($message);
                 // リクエスト
@@ -79,7 +79,8 @@ class Route
                 $message->add($carousel_message);
                 $message->add($confirm_message);
 
-                $logger->info('Reply text: ' . $replyText);
+                // $logger->info('Reply text: ' . $replyText);
+                $logger->info('Reply text: ' . $message);
                 // $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $message);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());

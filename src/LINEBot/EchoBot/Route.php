@@ -69,9 +69,16 @@ class Route
                 // $replyText = $event->getText();
                 $message = $event -> getTetx();
 
-                $res_contents = get_request($message);
+                // $res_contents = get_request($message);
                 // リクエスト
-                $replyText = 'うるせーばかやろー。';
+                // $replyText = 'うるせーばかやろー。';
+                $carousel_message = getCarouselMessage();
+                $confirm_message = getConfirm();
+
+                $message = new MultiMessageBuilder();
+                $message->add($carousel_message);
+                $message->add($confirm_message);
+
                 $logger->info('Reply text: ' . $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
@@ -100,4 +107,32 @@ class Route
       return $result;
 
     }
+
+    function getCarouselMessage() {
+      $columns = []; // カルーセル型カラムを5つ追加する配列
+      foreach ($lists as $list) {
+          // カルーセルに付与するボタンを作る
+          $action = new UriTemplateActionBuilder("クリックしてね", "http://www.backlog.jp/git-guide/stepup/stepup2_3.html" );
+          // カルーセルのカラムを作成する
+          $column = new CarouselColumnTemplateBuilder("タイトル(40文字以内)", "追加文", "https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB:Shoyu_ramen,_at_Kasukabe_Station_(2014.05.05)_2.jpg", [$action]);
+          $columns[] = $column;
+      }
+      // カラムの配列を組み合わせてカルーセルを作成する
+      $carousel = new CarouselTemplateBuilder($columns);
+      // カルーセルを追加してメッセージを作る
+      $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
+      return $carousel_message;
+    }
+
+    function getConfirm() {
+      // 「はい」ボタン
+      $yes_post = new PostbackTemplateActionBuilder("はい", "page=-1");
+      // 「いいえ」ボタン
+      $no_post = new PostbackTemplateActionBuilder("いいえ", "page=-1");
+      // Confirmテンプレートを作る
+      $confirm = new ConfirmTemplateBuilder("メッセージ", [$yes_post, $no_post]);
+      // Confirmメッセージを作る
+      $confirm_message = new TemplateMessageBuilder("メッセージのタイトル", $confirm);
+    }
+
 }

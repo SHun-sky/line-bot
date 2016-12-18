@@ -67,7 +67,7 @@ class Route
                 }
 
                 // $replyText = $event->getText();
-                $recieved_message = $event -> getTetx();
+                $recieved_message = $event -> getText();
 
                 // $res_contents = get_request($message);
                 // リクエスト

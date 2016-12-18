@@ -66,7 +66,8 @@ class Route
                     continue;
                 }
 
-                $replyText = $event->getText();
+                // $replyText = $event->getText();
+                $replyText = 'うるせーばかやろー。';
                 $logger->info('Reply text: ' . $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());

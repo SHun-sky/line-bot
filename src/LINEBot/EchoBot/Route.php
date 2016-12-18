@@ -80,7 +80,8 @@ class Route
                 $message->add($confirm_message);
 
                 $logger->info('Reply text: ' . $replyText);
-                $resp = $bot->replyText($event->getReplyToken(), $replyText);
+                // $resp = $bot->replyText($event->getReplyToken(), $replyText);
+                $resp = $bot->replyText($event->getReplyToken(), $message);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
             }
 
